@@ -100,7 +100,7 @@ async def parse_meal(request: schemas.MealQuery):
     """
     
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
         
         # Strip markdown code blocks just in case the AI adds them
