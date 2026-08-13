@@ -1089,8 +1089,10 @@ if (aiParseBtn) {
         body: JSON.stringify({ query: query })
       });
 
+      // FIX: Capture the exact error response from the Python server
       if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP Server Error ${response.status}`);
       }
 
       // Receive the dynamically generated JSON from Gemini
@@ -1121,7 +1123,8 @@ if (aiParseBtn) {
       
     } catch (err) {
       console.error("Backend connection error:", err);
-      toast("AI connection failed. Is your Python server running?", "danger");
+      // FIX: Display the true error message to the user UI
+      toast(`AI Error: ${err.message}`, "danger");
     } finally {
       aiParseBtn.classList.remove("loading");
       aiParseBtn.textContent = "Generate";
