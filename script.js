@@ -1081,7 +1081,7 @@ if (aiParseBtn) {
 
     try {
       // Send the query to your live Python FastAPI backend
-      const response = await fetch("http://127.0.0.1:8000/api/parse-meal", {
+      const response = await fetch("https://dietpilot-ppo3.onrender.com/api/parse-meal", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
