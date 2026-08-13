@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DietPilot — Prototype</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@400;600;700&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <!-- Link directly to your local dev files so your recent bug fixes apply -->
+  <script type="module" src="./script.js"></script>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  
+  <!-- Global Theme Toggle Button -->
+  <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark Mode">
+    <span class="icon-sun hidden">☀️ Light</span>
+    <span class="icon-moon">🌙 Dark</span>
+  </button>
+
+  <!-- New App Architecture Wrapper -->
+  <div class="app-wrapper">
+    
+    <!-- Fixed Left Sidebar (Hidden by default on login screen) -->
+    <aside class="site-sidebar hidden" id="app-sidebar">
+      <div class="brand-container">
+        <div class="brand">🏥 DietPilot</div>
+        <div class="brand-tagline">Keep your data private</div>
+      </div>
+      
+      <nav class="side-nav">
+        <button class="nav-btn active" id="nav-profile">👤 Profile</button>
+        <button class="nav-btn" id="nav-meals">🥗 Meals</button>
+        <button class="nav-btn" id="nav-tracker">📅 Tracker</button>
+        <button class="nav-btn" id="nav-reports">📈 Reports</button>
+        <button class="nav-btn" id="nav-rewards">🎁 Rewards</button>
+      </nav>
+      
+      <div class="points-display">
+        <span id="points-balance">0</span>
+        <span class="points-label">pts</span>
+      </div>
+    </aside>
+
+    <!-- Main Right-Hand Side Content -->
+    <main id="app" class="main-content">
+      
+      <!-- Dark Overlay Login Page -->
+      <section id="login-page">
+        
+        <!-- Tilted Card Collage Wall Background -->
+        <div class="login-bg-wall" aria-hidden="true">
+          <div class="bg-tile-grid">
+            <div class="bg-tile">🥦 <span>Nutrition</span></div>
+            <div class="bg-tile">🐟 <span>Proteins</span></div>
+            <div class="bg-tile">💧 <span>Hydration</span></div>
+            <div class="bg-tile">🏋️ <span>Fitness</span></div>
+            <div class="bg-tile">🥑 <span>Healthy Fats</span></div>
+            <div class="bg-tile">📊 <span>Tracker</span></div>
+            <div class="bg-tile">🎁 <span>Rewards</span></div>
+            <div class="bg-tile">🥗 <span>Meal Logs</span></div>
+            <div class="bg-tile">🍎 <span>HealthHub</span></div>
+            <div class="bg-tile">🏆 <span>Leaderboard</span></div>
+            <div class="bg-tile">🚴 <span>ActiveSG</span></div>
+            <div class="bg-tile">⚡ <span>Calorie Calc</span></div>
+          </div>
+        </div>
+        
+        <!-- Dark Gradient Backdrop Overlay -->
+        <div class="login-backdrop-overlay"></div>
+
+        <!-- Centered Slate Login Container -->
+        <div id="login-container" class="dark-login-card">
+          <h2>Login to DietPilot</h2>
+          
+          <form id="login-form" class="form">
+            <input id="email" type="email" placeholder="Username/Email/Phone" required />
+            <input id="password" type="password" placeholder="Password" required />
+            <button type="submit" class="btn btn-dark-primary">Log In</button>
+          </form>
+
+         <div class="dark-card-links">
+            <a href="#" id="forgot-password-link">Forgot Password or Username?</a>
+          </div>
+
+          <div class="dark-card-divider"></div>
+
+          <div class="dark-action-group">
+            <button id="otp-login-btn" type="button" class="btn btn-dark-secondary">Email Me a One-Time Code</button>
+            <button id="singpass-login" type="button" class="btn btn-dark-singpass">Sign in with Singpass</button>
+          </div>
+
+          <div class="dark-card-footer">
+            Don't have an account? <a href="#" id="go-to-signup-link">Sign Up</a>
+          </div>
+        </div>
+
+        <!-- Sign Up Container (Hidden by default) -->
+        <div id="signup-container" class="dark-login-card hidden">
+          <h2>Create an Account</h2>
+          
+          <form id="signup-form" class="form">
+            <input id="signup-name" type="text" placeholder="Full Name" required />
+            <input id="signup-email" type="email" placeholder="Email Address" required />
+            <input id="signup-password" type="password" placeholder="Password" minlength="6" required />
+            <button type="submit" class="btn btn-dark-primary">Sign Up</button>
+          </form>
+
+          <div class="dark-card-divider" style="margin-top: 2rem;"></div>
+
+          <div class="dark-card-footer">
+            Already have an account? <a href="#" id="back-to-login-link">Log In</a>
+          </div>
+        </div>
+        
+        <!-- Account Recovery Container (Hidden by default) -->
+        <div id="recovery-container" class="dark-login-card hidden">
+          <h2>DietPilot Account Recovery</h2>
+          
+          <form id="recovery-form" class="form" style="margin-top: 1.5rem; text-align: left;">
+            <label for="recovery-input" style="display: block; font-size: 0.8rem; color: #a0a5b5; margin-bottom: 0.4rem; font-weight: 600;">Username/Email/Phone</label>
+            <input id="recovery-input" type="text" placeholder="Enter your username, email, or phone number" required />
+            <button type="submit" class="btn btn-dark-primary" style="margin-top: 1rem;">Next</button>
+          </form>
+
+          <div class="dark-card-divider" style="margin-top: 2rem;"></div>
+
+          <div class="dark-card-footer">
+            Remembered your details? <a href="#" id="back-from-recovery-link">Log In</a>
+          </div>
+        </div>
+        
+      </section>
+
+      <!-- OTP Email Request Modal -->
+      <div id="otp-email-modal" class="modal-overlay hidden">
+        <div class="dark-login-card" style="max-width: 420px; padding: 2.5rem 2rem;">
+          <h2 style="margin-bottom: 0.5rem;">Send OTP</h2>
+          <p style="color: #a0a5b5; font-size: 0.9rem; margin-bottom: 1.5rem;">Enter your email to receive a 6-digit code.</p>
+          <form id="otp-email-form" class="form">
+            <input id="otp-request-email" type="email" placeholder="Email" required />
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+              <button type="button" id="cancel-otp-email-btn" class="btn btn-dark-secondary" style="flex: 1;">Cancel</button>
+              <button type="submit" class="btn btn-dark-primary" style="flex: 1; margin-top: 0;">Send Code</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+   <!-- Terms as Modal (PDPA Consent) -->
+      <div id="terms-modal" class="modal-overlay hidden">
+        <div class="dark-login-card pdpa-card">
+          
+          <div class="pdpa-header">
+            <span class="shield-icon">🛡️</span>
+            <h2>Data Privacy (PDPA)</h2>
+          </div>
+          
+          <div class="dark-terms-body">
+            <div class="term-item">
+              <strong>🎯 Purpose</strong>
+              <p>This prototype collects minimal personal and health information locally to provide diet recommendations and a gamified tracker.</p>
+            </div>
+            <div class="term-item">
+              <strong>📦 Data Collected</strong>
+              <p>Age, sex, weight, height, and exercise frequency. Meals and activity logs are stored locally in your browser only.</p>
+            </div>
+            <div class="term-item">
+              <strong>🔒 Storage & Use</strong>
+              <p>All data is stored in your browser's localStorage for demonstration only. We do not transmit, sell, or share your data to third parties.</p>
+            </div>
+            <div class="term-item">
+              <strong>⚖️ Your Rights</strong>
+              <p>You may access, correct, or delete your data by clearing the app's fields or browser storage, aligning with PDPA rights.</p>
+            </div>
+            <div class="term-item">
+              <a href="https://sso.agc.gov.sg/Act/PDPA2012" target="_blank" class="external-link">Read Singapore's PDPA (external link) ↗</a>
+            </div>
+          </div>
+
+          <div class="dark-checkbox-container">
+            <label class="custom-checkbox-label">
+              <input id="agree-checkbox" type="checkbox" />
+              <span class="checkmark"></span>
+              <span class="label-text">I have read and explicitly consent to the Terms & Conditions and PDPA policy.</span>
+            </label>
+          </div>
+
+          <div class="dark-action-group" style="margin-top: 1.8rem; flex-direction: row; gap: 1rem;">
+            <button id="back-to-login" class="btn btn-dark-secondary" style="flex: 1;">Decline</button>
+            <button id="agree-button" class="btn btn-dark-primary" style="flex: 2; margin-top: 0;" disabled>I Agree, Proceed</button>
+          </div>
+
+        </div>
+      </div>
+      
+      <!-- 2FA OTP Modal (Hidden by default) -->
+      <div id="otp-modal" class="modal-overlay hidden">
+        <div class="panel modal otp-card">
+          <div style="text-align: center;">
+            <h2>Security Check</h2>
+            <p class="muted" style="margin-top: 0.5rem;">Please enter the 6-digit code sent to your device.</p>
+            <p class="small muted">(Demo: Type <strong>123456</strong> to proceed)</p>
+          </div>
+          
+          <!-- Modern 6-Digit Input Grid -->
+          <div class="otp-input-group">
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+            <input type="text" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" autocomplete="off" />
+          </div>
+          
+          <div class="actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+            <button id="verify-otp-btn" class="btn btn-primary" disabled>Verify Code</button>
+            <button id="cancel-otp-btn" class="btn btn-ghost">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Food Database Search Modal -->
+      <div id="food-search-modal" class="modal-overlay hidden">
+        <div class="panel modal" style="max-width: 640px; height: 75vh; display: flex; flex-direction: column; padding: 2rem;">
+          
+          <div class="section-header" style="margin-bottom: 1rem;">
+            <h2 style="margin: 0; font-size: 1.4rem;">🔍 Find Ingredient</h2>
+            <button id="close-food-search" class="btn-remove" style="font-size: 1.2rem;">✕</button>
+          </div>
+          
+          <input type="text" id="food-search-input" placeholder="Search foods (e.g., salmon, rice, broccoli)..." style="margin-bottom: 1.2rem;" autocomplete="off" />
+          
+          <!-- Category Filter Chips -->
+          <div class="category-scroll-rail">
+            <button class="cat-chip active" data-cat="All">All</button>
+            <button class="cat-chip" data-cat="Produce">Fruits & Veg</button>
+            <button class="cat-chip" data-cat="Protein">Proteins</button>
+            <button class="cat-chip" data-cat="Carbs">Carbs</button>
+            <button class="cat-chip" data-cat="Asian">Asian</button>
+            <button class="cat-chip" data-cat="Fast Food">Fast Food</button>
+          </div>
+
+          <!-- Interactive Grid Results -->
+          <div id="food-search-results" class="food-search-grid">
+            <!-- Populated by JavaScript -->
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Singpass QR Modal (Hidden by default) -->
+      <div id="singpass-modal" class="modal-overlay hidden">
+        <div class="panel modal" style="text-align: center; max-width: 400px; padding: 3rem 2rem;">
+          <h2 style="color: #c9002b; margin-bottom: 0.5rem;">Singpass</h2>
+          <p class="muted small" style="margin-bottom: 2rem;">Scan the QR code using your Singpass app to log in.</p>
+          
+          <!-- Mock QR Code Visual -->
+          <div style="width: 200px; height: 200px; background: white; border: 2px solid rgba(0,0,0,0.08); border-radius: 12px; margin: 0 auto; display: flex; align-items: center; justify-content: center; padding: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
+            <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10 10H40V40H10V10ZM20 20H30V30H20V20Z" fill="#111"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M60 10H90V40H60V10ZM70 20H80V30H70V20Z" fill="#111"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10 60H40V90H10V60ZM20 70H30V80H20V70Z" fill="#111"/>
+              <rect x="50" y="50" width="10" height="10" fill="#111"/>
+              <rect x="70" y="50" width="10" height="10" fill="#111"/>
+              <rect x="50" y="70" width="10" height="10" fill="#111"/>
+              <rect x="80" y="60" width="10" height="20" fill="#111"/>
+              <rect x="60" y="80" width="30" height="10" fill="#111"/>
+              <rect x="60" y="60" width="10" height="10" fill="#111"/>
+            </svg>
+          </div>
+          
+          <div class="actions" style="margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem;">
+            <!-- Authentic Singpass Red Button -->
+            <button id="simulate-scan-btn" class="btn btn-primary" style="background: #c9002b; box-shadow: 0 10px 20px rgba(201,0,43,0.2);">Simulate Scan (Demo)</button>
+            <button id="cancel-singpass-btn" class="btn btn-ghost">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="page hidden">
+          <div class="dashboard-app" id="dashboard-app">
+            
+            <div id="page-profile" class="panel page-section">
+              <div class="dashboard-hero">
+                <div class="hero-copy">
+                  <span class="eyebrow">Nutrition Hub</span>
+                  <h2>Build better habits, one bite at a time.</h2>
+                  <p class="hero-text muted">Personalised meal guidance, hydration tracking, and wellness rewards.</p>
+                  <div class="hero-actions">
+                    <button class="btn btn-primary" id="focus-profile">Update profile</button>
+                    <button class="btn btn-ghost" id="focus-meals">Log a meal</button>
+                  </div>
+                  <div class="hero-badges">
+                    <span>50+ foods</span>
+                    <span>Daily points</span>
+                    <span>Local PDPA safe</span>
+                  </div>
+                </div>
+                <div class="hero-visual dashboard-hero-graphic" aria-hidden="true">
+                  <svg viewBox="0 0 560 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="heroGlow" x1="0" y1="0" x2="560" y2="420" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#22c55e" stop-opacity="0.22"/>
+                        <stop offset="0.55" stop-color="#06b6d4" stop-opacity="0.16"/>
+                        <stop offset="1" stop-color="#7c3aed" stop-opacity="0.14"/>
+                      </linearGradient>
+                    </defs>
+                    <rect x="30" y="40" width="500" height="330" rx="34" fill="url(#heroGlow)"/>
+                    <circle cx="150" cy="120" r="64" fill="#f97316" fill-opacity="0.16"/>
+                    <circle cx="420" cy="280" r="82" fill="#22c55e" fill-opacity="0.14"/>
+                    <path d="M160 190c40-24 110-24 152 8 16 12 46 36 36 64-8 24-36 34-60 30-42-8-80-60-128-102z" fill="#ffffff" opacity="0.92"/>
+                    <path d="M210 200c42 22 86 24 124 4" stroke="#0f172a" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M350 90c-20 10-40 44-20 74 18 28 54 34 84 20" stroke="#06b6d4" stroke-width="12" stroke-linecap="round"/>
+                    <path d="M345 255c10 18 26 34 52 38" stroke="#7c3aed" stroke-width="10" stroke-linecap="round"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="overview-cards">
+                <div class="overview-card">
+                  <div class="overview-icon">🥦</div>
+                  <div>
+                    <h4>Nutrition</h4>
+                    <p class="muted">Plant-forward options</p>
+                  </div>
+                </div>
+                <div class="overview-card">
+                  <div class="overview-icon">💧</div>
+                  <div>
+                    <h4>Hydration</h4>
+                    <p class="muted">Track daily glasses</p>
+                  </div>
+                </div>
+                <div class="overview-card">
+                  <div class="overview-icon">🏅</div>
+                  <div>
+                    <h4>Rewards</h4>
+                    <p class="muted">Earn points for habits</p>
+                  </div>
+                </div>
+              </div>
+              <div class="page-header page-header-profile">
+                <div>
+                  <span class="page-label">Profile</span>
+                  <h2>Personalised health insights</h2>
+                  <p class="header-copy">Update your body details and receive a tailored daily plan, risk overview, and meal guidance.</p>
+                </div>
+                <div class="actions-small">
+                  <button id="export-pdf" class="btn btn-ghost" title="Export report">📥</button>
+                  <button id="logout-btn" class="btn btn-ghost">Logout</button>
+                </div>
+              </div>
+
+              <!-- ADVANCED MODE SETTINGS TOGGLE -->
+              <div class="card" style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h4 style="margin: 0 0 0.2rem 0; font-size: 1.05rem;">🔬 Advanced Mode</h4>
+                  <p class="muted small" style="margin: 0;">Enable detailed macronutrient tracking (Protein, Carbs, Fats) for your meals.</p>
+                </div>
+                <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 28px;">
+                  <input type="checkbox" id="advanced-mode-toggle" style="opacity: 0; width: 0; height: 0;">
+                  <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                  <!-- Note: A tiny bit of CSS will be injected by script.js to make the slider work if it's missing from your style.css -->
+                </label>
+              </div>
+
+              <div id="profile-summary" class="profile-summary card hidden">
+                <div class="summary-grid">
+                  <div>
+                    <span>Daily target</span>
+                    <strong id="summary-goal">Set your profile</strong>
+                  </div>
+                  <div>
+                    <span>Recommended meals</span>
+                    <strong id="summary-action">Meal ideas refresh automatically</strong>
+                  </div>
+                </div>
+                <p id="summary-tip" class="muted">Complete your health details to get a personalised snapshot.</p>
+              </div>
+
+              <div class="profile-side-widgets">
+                <div class="water-widget card">
+                  <div class="water-head">
+                    <div>
+                      <h4>Water Tracker</h4>
+                      <div id="water-score">0 / 8 glasses</div>
+                    </div>
+                    <div class="water-icon">💧</div>
+                  </div>
+                  <div id="water-cups" class="water-cups"></div>
+                  <div class="btn-row">
+                    <button id="add-water-profile" class="btn btn-secondary">Drink water</button>
+                    <button id="reset-water-profile" class="btn btn-ghost">Reset</button>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h4>🎁 Rewards</h4>
+                  <p class="muted">Balance: <strong id="reward-balance-profile">0</strong> pts</p>
+                  <div id="top-rewards-rail-profile" class="top-rewards-rail"></div>
+                </div>
+              </div>
+
+              <form id="health-details-form" class="form">
+                <div class="row">
+                  <input id="age" type="number" placeholder="Age" min="1" max="120" required />
+                  <select id="sex" required>
+                    <option value="">Sex</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <input id="weight" type="number" placeholder="Weight (kg)" step="0.1" required />
+                  <input id="height" type="number" placeholder="Height (cm)" step="0.1" required />
+                </div>
+                <div class="row">
+                  <select id="activity-level" required>
+                    <option value="">Activity level</option>
+                    <option value="sedentary">Sedentary (little/no exercise)</option>
+                    <option value="light">Lightly active (1–3 days/week)</option>
+                    <option value="moderate">Moderately active (3–5 days/week)</option>
+                    <option value="high">Very active (6–7 days/week)</option>
+                    <option value="extra">Extra active (physical job / intense training)</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <select id="deficit-preset" required>
+                    <option value="steady">Weight goal: Steady weight loss</option>
+                    <option value="slow">Slow weight loss (gentle)</option>
+                    <option value="quick">Quick weight loss (aggressive)</option>
+                    <option value="maintain">Maintain weight</option>
+                  </select>
+                </div>
+                <div class="row btn-row">
+                  <button type="submit" class="btn btn-primary">Save Profile</button>
+                  <button id="clear-profile" type="button" class="btn btn-secondary">Clear</button>
+                </div>
+              </form>
+
+              <div id="health-recommendations" class="card hidden page-section">
+                <h3>Analysis</h3>
+                <div id="recommendations-text"></div>
+                <div id="bmr-text" class="muted small"></div>
+                <div class="risks-list" id="risks-list"></div>
+              </div>
+            </div>
+            
+            <!-- SCIENCE & TRUST: BMR & HEALTHY PLATE -->
+              <div id="science-trust-section" class="card page-section" style="margin-top: 1.5rem;">
+                <div class="section-header">
+                  <h4>Science & Trust</h4>
+                  <span class="badge" style="background: rgba(139, 92, 246, 0.15); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Evidence-Based</span>
+                </div>
+
+                <!-- BMR Explanation -->
+                <div class="science-explanation">
+                  <h5 style="margin-bottom: 0.5rem; font-size: 1rem;">How We Calculate Your Needs</h5>
+                  <p class="muted small">Your basal metabolic rate (BMR) and total daily energy expenditure (TDEE) are calculated using the Mifflin-St Jeor equation—a scientifically validated formula.</p>
+                  <div class="math-box">
+                    <div><strong>Men:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in yrs) + 5</div>
+                    <div style="margin-top: 0.5rem;"><strong>Women:</strong> BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in yrs) - 161</div>
+                  </div>
+                  <p class="muted small" style="margin-top:0.8rem;">We multiply your BMR by your activity factor to find your TDEE, ensuring safe, personalized caloric targets.</p>
+                </div>
+
+                <hr style="margin: 1.5rem 0;">
+
+                <!-- Interactive My Healthy Plate -->
+                <div class="healthy-plate-container">
+                  <h5 style="margin-bottom: 0.5rem; font-size: 1rem;">My Healthy Plate (HealthHub Guide)</h5>
+                  <p class="muted small">Hover or tap a section of the plate to see portioning advice based on Singapore's health guidelines.</p>
+                  
+                  <div class="plate-interactive-area">
+                    
+                    <!-- CSS Visual Plate -->
+                    <div class="plate-visual">
+                      <div class="plate-half plate-veg" data-info="veg">
+                        <span>½ Fruit & Veg</span>
+                      </div>
+                      <div class="plate-quarter-group">
+                        <div class="plate-quarter plate-protein" data-info="protein">
+                          <span>¼ Protein</span>
+                        </div>
+                        <div class="plate-quarter plate-carbs" data-info="carbs">
+                          <span>¼ Wholegrain</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Dynamic Info Panel -->
+                    <div class="plate-info-panel" id="plate-info-panel">
+                      <strong id="plate-info-title">Select a plate section</strong>
+                      <p id="plate-info-desc" class="muted small" style="margin-top: 0.4rem;">Interact with the plate to learn how to optimally build your meals.</p>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+
+            <div id="page-meals" class="panel page-section hidden">
+              <div class="page-header page-header-meals">
+                <div>
+                  <span class="page-label">🥗 Meals</span>
+                  <h2>Meal logging & suggestions</h2>
+                  <p class="header-copy">Keep a clean food diary, check calories, and refresh local meal ideas for healthier choices.</p>
+                </div>
+              </div>
+              
+              <!-- AI SMART LOG FEATURE -->
+              <div class="ai-logger-card" style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(6,182,212,0.05)); border: 1px solid rgba(16,185,129,0.2); padding: 1.5rem; border-radius: 20px; margin-top: 1.5rem; margin-bottom: 2rem;">
+                <div class="ai-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <span style="font-weight: 800; color: var(--text); font-size: 1.1rem;">✨ AI Smart Log</span>
+                  <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: var(--secondary); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700;">Powered by Gemini</span>
+                </div>
+                <p class="muted small" style="margin-bottom: 1rem; line-height: 1.4;">Type what you ate in natural language, and our AI will automatically parse the ingredients, estimate the weight, and structure the macros.</p>
+                <div class="form-inline" style="display: flex; gap: 0.75rem;">
+                  <input type="text" id="ai-meal-input" placeholder="e.g., 'I had 200g of grilled salmon with a side of broccoli'" style="flex: 1; padding: 0.9rem 1.2rem; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text);" />
+                  <button type="button" id="ai-parse-btn" class="btn btn-primary" style="white-space: nowrap;">Generate</button>
+                </div>
+              </div>
+
+              <h3>Meal Logger</h3>
+              <form id="meal-form" class="meal-form">
+                <div class="meal-form-header">
+                  <input id="meal" placeholder="Dish name" />
+                  <select id="recipe-selector">
+                    <option value="">Saved recipes</option>
+                  </select>
+                  <input id="servings" type="number" min="1" step="1" value="1" placeholder="Servings" />
+                </div>
+
+                <div class="ingredient-shell">
+                  <div class="ingredient-row ingredient-row-header">
+                    <span>🌿 Ingredient</span>
+                    <span>Qty</span>
+                    <span>Weight (g)</span>
+                    <span>Calories</span>
+                    <!-- New Macro Header (Hidden by default) -->
+                    <span class="macro-display hidden">Macros (P/C/F)</span>
+                  </div>
+                  <div id="ingredient-rows"></div>
+                  <button type="button" id="add-ingredient" class="btn btn-ghost small">+ Add ingredient</button>
+                </div>
+
+                <div class="ingredient-shell">
+                  <div class="ingredient-row ingredient-row-header">
+                    <span>🛢️ Oil / fat</span>
+                    <span>Amount (ml)</span>
+                    <span>Calories</span>
+                    <span class="macro-display hidden">Macros (P/C/F)</span>
+                  </div>
+                  <div id="oil-rows"></div>
+                  <button type="button" id="add-oil" class="btn btn-ghost small">+ Add oil</button>
+                </div>
+
+                <div class="ingredient-shell">
+                  <div class="ingredient-row ingredient-row-header">
+                    <span>🥤 Drink / beverage</span>
+                    <span>Amount (ml)</span>
+                    <span>Calories</span>
+                    <span class="macro-display hidden">Macros (P/C/F)</span>
+                  </div>
+                  <div id="drink-rows"></div>
+                  <button type="button" id="add-drink" class="btn btn-ghost small">+ Add drink</button>
+                </div>
+
+                <div class="recipe-summary card">
+                  <div class="recipe-metrics">
+                    <div>
+                        <span class="muted small">1 serving</span>
+                      <strong id="serving-cal">0 kcal</strong>
+                    </div>
+                    <div>
+                      <span class="muted small">Entire dish</span>
+                      <strong id="dish-cal">0 kcal</strong>
+                    </div>
+                    <!-- New Macro Summary Blocks (Hidden by default) -->
+                    <div class="macro-display hidden" style="border-left: 1px solid var(--border); padding-left: 1rem;">
+                      <span class="muted small">Protein</span>
+                      <strong id="dish-protein" style="color: #3b82f6;">0 g</strong>
+                    </div>
+                    <div class="macro-display hidden">
+                      <span class="muted small">Carbs</span>
+                      <strong id="dish-carbs" style="color: #eab308;">0 g</strong>
+                    </div>
+                    <div class="macro-display hidden">
+                      <span class="muted small">Fats</span>
+                      <strong id="dish-fats" style="color: #ef4444;">0 g</strong>
+                    </div>
+                  </div>
+                  <div id="meal-estimate" class="muted small">Estimate from ingredients</div>
+                </div>
+
+                <div class="meal-form-actions">
+                  <button type="submit" class="btn btn-success">Add recipe</button>
+                </div>
+              </form>
+              <ul id="meal-list" class="meal-list"></ul>
+              <div class="stats">
+                <div>
+                  <div class="small muted">🔥 Total kcal</div>
+                  <div class="stat-row">
+                    <div id="total-cal" class="stat-value">0</div>
+                    <canvas id="cal-sparkline" width="120" height="28" aria-hidden="true"></canvas>
+                    <div id="cal-warning" class="muted small cal-warning hidden">Calories overload</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="small muted">✅ Rec kcal</div>
+                  <div id="rec-cal" class="stat-value">0</div>
+                </div>
+                <div>
+                  <div class="small muted">🔄 Remaining</div>
+                  <div id="cal-remaining" class="stat-value remaining positive">—</div>
+                </div>
+              </div>
+
+              <!-- DAILY MACRO PROGRESS RING (Hidden by default) -->
+              <div id="daily-macro-dashboard" class="card macro-display hidden" style="margin-top: 1.5rem;">
+                <h4 style="margin-bottom: 1rem;">Daily Macronutrients</h4>
+                <div style="display: flex; justify-content: space-around; align-items: center;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #3b82f6;" id="daily-protein">0g</div>
+                    <div class="muted small">Protein</div>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #eab308;" id="daily-carbs">0g</div>
+                    <div class="muted small">Carbs</div>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #ef4444;" id="daily-fats">0g</div>
+                    <div class="muted small">Fats</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="meal-suggestions card" style="margin-top: 1.5rem;">
+                <div class="section-header">
+                  <h4>Meal Suggestions</h4>
+                  <button id="suggest-meals" class="btn btn-ghost">Refresh ideas</button>
+                </div>
+                <div id="suggestion-cards" class="suggestion-grid"></div>
+              </div>
+              
+              <!-- Suggestion preview modal -->
+              <div id="suggestion-modal" class="modal-overlay hidden">
+                <div class="modal">
+                  <div class="modal-body">
+                    <h3 id="modal-meal-name">Meal</h3>
+                    <div id="modal-meal-note" class="muted small"></div>
+                    <h4>Details</h4>
+                    <ul id="modal-ings" class="suggest-ings"></ul>
+                    <div class="btn-row" style="margin-top:1rem; justify-content:flex-end;">
+                      <button id="modal-add-btn" class="btn btn-primary">Add to meal log</button>
+                      <button id="modal-cancel-btn" class="btn btn-ghost">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="page-tracker" class="panel page-section hidden">
+              <div class="page-header page-header-tracker">
+                <div>
+                  <span class="page-label">📅 Tracker</span>
+                  <h2>Daily habit streak</h2>
+                  <p class="header-copy">Complete your wellness tasks and build consistency with hydration, movement, and bonus points.</p>
+                </div>
+              </div>
+              <h3>Daily Tracker</h3>
+              <div class="tracker-stats">
+                <div class="stat-card">
+                  <div class="stat-icon">🍽️</div>
+                  <div class="stat-info">
+                    <div class="stat-label">Meals logged</div>
+                    <div class="stat-value" id="meals-count">0</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">🔥</div>
+                  <div class="stat-info">
+                    <div class="stat-label">Total calories</div>
+                    <div class="stat-value" id="total-calories-stat">0</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">🎯</div>
+                  <div class="stat-info">
+                    <div class="stat-label">Daily goal</div>
+                    <div class="stat-value" id="daily-goal-stat">2000</div>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon">📊</div>
+                  <div class="stat-info">
+                    <div class="stat-label">Progress</div>
+                    <div class="stat-value" id="progress-percent">0%</div>
+                  </div>
+                </div>
+              </div>
+              <h4 class="section-title">Daily Wellness Tasks</h4>
+              <div class="tasks-list">
+                <label><input class="task" type="checkbox" data-points="10" /> Walk 5000 steps</label>
+                <label><input class="task" type="checkbox" data-points="15" /> Log 3 meals</label>
+                <label><input class="task" type="checkbox" data-points="10" /> Drink 2L water</label>
+                <label><input class="task" type="checkbox" data-points="15" /> 20 min exercise</label>
+              </div>
+              <div class="progress-container">
+                <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+                <div class="progress-info"><span id="progress-text">0</span> pts • <span id="claim-status">Complete all tasks to claim.</span></div>
+                <div class="claim-row">
+                  <button id="claim-points" class="btn btn-primary" disabled>Claim Daily Bonus</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="page-reports" class="panel page-section hidden">
+              <div class="page-header page-header-reports">
+                <div>
+                  <span class="page-label">📈 Reports</span>
+                  <h2>Progress overview</h2>
+                  <p class="header-copy">Compare your journey with the leaderboard and review health progress in one place.</p>
+                </div>
+              </div>
+              <h3>Leaderboard</h3>
+                <div class="reports-layout">
+                  <div class="leaderboard-panel card">
+                    <div class="leaderboard-header">
+                      <h4>🏆 Leaderboard</h4>
+                      <div class="you-score">Your score: <span id="your-score" class="stat-value">0</span></div>
+                    </div>
+                    <ul id="leaderboard" class="leaderboard"></ul>
+                  </div>
+                  <div class="report-summary card">
+                    <h4>Snapshot</h4>
+                    <p id="report-summary-text" class="muted">Complete profile data to generate health insights.</p>
+                  </div>
+                  <div class="singapore-stats card">
+                    <h4>Singapore Nutrition Stats</h4>
+                    <div id="sg-stats" class="muted small">Loading local stats...</div>
+                  </div>
+                </div>
+            </div>
+
+            <div id="page-rewards" class="panel page-section hidden">
+              <div class="page-header page-header-rewards">
+                <div>
+                  <span class="page-label">🎁 Rewards</span>
+                  <h2>Earn and redeem</h2>
+                  <p class="header-copy">Use points for wellness treats or save for bigger prizes — your balance updates instantly.</p>
+                </div>
+              </div>
+              <h3>🎁 Redeem Rewards</h3>
+              <p class="muted">Use your points to unlock exclusive rewards. Your balance: <strong id="reward-balance">0</strong> pts</p>
+              <div class="rewards-layout">
+                <div id="rewards-grid" class="rewards-grid"></div>
+                <div id="redemption-history" class="redemption-history hidden card">
+                <h4>Redemption History</h4>
+                <ul id="history-list" class="history-list"></ul>
+              </div>
+              </div>
+
+              <!-- DIGITAL BINDER GAMIFICATION -->
+              <div style="margin-top: 3rem;">
+                <div class="page-header" style="background: linear-gradient(135deg, #8b5cf6, #c084fc); margin-bottom: 1.5rem;">
+                  <div>
+                    <span class="page-label" style="color: rgba(255,255,255,0.9);">🎴 Digital Binder</span>
+                    <h2 style="color: white;">Collection</h2>
+                    <p class="header-copy" style="color: rgba(255,255,255,0.85);">Unlock exclusive holographic cards by hitting your daily habit milestones consistently.</p>
+                  </div>
+                </div>
+                <div id="collectibles-grid" class="collectibles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+                  <!-- Cards will be injected by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- VIRTUAL VOUCHER PASS MODAL                -->
+  <!-- ========================================= -->
+  <div id="voucher-modal" class="modal-overlay hidden">
+    <div class="panel modal" style="max-width: 440px; text-align: center; padding: 2.5rem 2rem;">
+      
+      <div style="font-size: 3.5rem; margin-bottom: 0.5rem;" id="voucher-modal-emoji">🎟️</div>
+      <h2 id="voucher-modal-title" style="margin-bottom: 0.3rem;">Voucher Name</h2>
+      <p class="muted small" id="voucher-modal-desc" style="margin-bottom: 1.5rem;">Description</p>
+      
+      <!-- Digital Ticket Card -->
+      <div style="background: linear-gradient(135deg, #06b6d4, #22c55e); color: white; padding: 1.5rem; border-radius: 16px; text-align: left; margin-bottom: 1.5rem; box-shadow: 0 10px 25px rgba(6,182,212,0.25);">
+        <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; background: rgba(0,0,0,0.15); padding: 0.2rem 0.6rem; border-radius: 6px; display: inline-block; margin-bottom: 0.8rem;">
+          ACTIVE VOUCHER PASS
+        </div>
+        <div style="font-size: 0.75rem; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em;">
+          Unique Voucher ID
+        </div>
+        <div id="voucher-modal-code" style="font-size: 1.4rem; font-weight: 800; font-family: monospace; letter-spacing: 0.1em; margin: 0.2rem 0 0.8rem 0; background: rgba(0,0,0,0.2); padding: 0.4rem 0.8rem; border-radius: 8px; display: inline-block;">
+          PD-9928-XYZ
+        </div>
+        <div id="voucher-modal-date" style="font-size: 0.8rem; opacity: 0.9;">
+          Redeemed: Aug 6, 2026
+        </div>
+        <div style="font-family: monospace; font-size: 1.2rem; letter-spacing: 2px; text-align: center; margin-top: 1.2rem; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 0.4rem; border-radius: 6px;">
+          ||| | |||| || | || ||||| | ||
+        </div>
+      </div>
+
+      <button id="close-voucher-modal" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">Back to Rewards</button>
+      
+    </div>
+  </div>
+
+  <div id="toasts" aria-hidden="true"></div>
+  
+  <!-- Add switch CSS directly so the Advanced Mode toggle looks perfect immediately -->
+  <style>
+    .switch input { display:none; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(22px); }
+  </style>
+
+
+</body>
+</html>
